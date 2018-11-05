@@ -6,7 +6,7 @@ Requirements: Arduino (I used an Arduino Mega 2560 Rev3), Raspberry Pi (I used a
 - breadboard, jumper wires, buzzer, HC-SR01 sensor.
 - every time the distance between the sensor and the object in front of it is below 20 centimeters, the buzzer will start and we will print a message in the serial monitor ("Intruder").
 
-Diagram: Images/Diagram.png.
+Diagram: Images/Diagram.png (Take the shorter leg and connect it to Ground. The longer leg goes to PWM 11).
 
 Code: file ArduinoDistance.ino.
 
