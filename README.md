@@ -6,9 +6,9 @@ Requirements: Arduino (I used an Arduino Mega 2560 Rev3), Raspberry Pi (I used a
 - breadboard, jumper wires, buzzer, HC-SR01 sensor.
 - every time the distance between the sensor and the object in front of it is below 20 centimeters, the buzzer will start and we will print a message in the serial monitor ("Intruder").
 
-Diagram:(will come later)
+Diagram: Images/Diagram.png.
 
-Code: file ArduinoDistance.
+Code: file ArduinoDistance.ino.
 
 # Raspberry:
 - take the data from arduino and send it to Firebase Database.
