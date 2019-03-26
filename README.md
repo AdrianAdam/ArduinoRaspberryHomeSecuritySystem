@@ -13,17 +13,17 @@ Code: file ArduinoDistance.ino.
 # Raspberry:
 - take the data from arduino and send it to Firebase Database.
 - we make a serial connection between Arduino and Raspberry.
-- we make a new project in Firebase and we start structuring the code.
-- we'll install a camera and: the phone will be able to connect, from within the app, to a livestream and see live the room where the camera is and, when an intruder is detected, the camera will start recording for 10 seconds. After those 10 seconds, the file is posted to Firebase and the app will take it from there.
-- (more explanations will come later)
+- we will import a lot of libraries needed for firebase database, storage and other essentials
+- we'll install a camera and: the phone will be able to connect, from within the app, to a livestream and see live the room where the camera is and, when an intruder is detected, the camera will start recording for 10 seconds. After those 10 seconds, the file is posted to Firebase and the android app will take it from there.
+- there is no need to manually delete older videos, because each time we run the script, and at each 30 minutes, the videos are automatically deleted.
+- initially I didn't have the function to delete older videos, and I have noticed that older videos were uploaded to firebase instead of the newer ones (when I rerun the script, the video count restarts at 0). So a file management system is mandatory.
 
-Code: (will come later)
+Code: file Raspberry.py
 
 # Android Studio
 - take the data from Firebase Database.
 - we send push notifications every time a new data is inserted in the database (with Firebase functions).
-- the ability to see a livestream and recorded footage.
-- the ability to see when the alarm went off.
-- the ability to delete older logs.
+- we can: see a livestream and recorded footage and when the alarm went off and delete older logs.
+- videos will be stored locally to save data (and make them available to watch when offline).
 
 Code: (will come then the project is ready)
