@@ -9,6 +9,7 @@ import subprocess
 import datetime
 from picamera import PiCamera
 from google.cloud import storage
+from apscheduler.schedulers.background import BackgroundScheduler
 
 ser=serial.Serial("/dev/ttyACM0",9600)
 ser.baudrate=9600
@@ -16,12 +17,29 @@ ser.baudrate=9600
 Input = ""
 startRecording = False
 indexVideo = 0
+indexVideoDeleted = 0
+callFunctionAgain = 600 #repeat the function after 10 minutes
+videoPath = "/home/pi/Documents/Project"
 
 camera = PiCamera()
 camera.rotation = 180
 camera.resolution = (1280, 768)
 
-videoPath = "/home/pi/Documents/Project"
+
+def deleteVideos():
+    global indexVideoDeleted
+    if not indexVideo == indexVideoDeleted:
+        for i in range(indexVideoDeleted, indexVideo - 1):
+            os.remove("/home/pi/Documents/Project/video{:03d}.h264".format(i))
+            os.remove("/home/pi/Documents/Project/video{:03d}.mp4".format(i))
+           
+        indexVideoDeleted = indexVideo - 1
+        
+        
+scheduler = BackgroundScheduler()
+scheduler.start()
+deleteVideos()
+scheduler.add_job(deleteVideos, 'interval', seconds = callFunctionAgain)
 
 firebase = firebase.FirebaseApplication('', None) #link to your Firebase project
 client = storage.Client.from_service_account_json('') #path to your Firebase storage json file
@@ -54,6 +72,6 @@ except KeyboardInterrupt:
     pass
 
 if not indexVideo == 0:
-    for i in range(0, indexVideo + 1):
+    for i in range(indexVideosDeleted, indexVideo + 1):
         os.remove("/home/pi/Documents/Project/video{:03d}.h264".format(i))
         os.remove("/home/pi/Documents/Project/video{:03d}.mp4".format(i))
