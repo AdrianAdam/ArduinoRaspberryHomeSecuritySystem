@@ -10,6 +10,7 @@ import datetime
 from picamera import PiCamera
 from google.cloud import storage
 from Crypto.Cipher import AES
+import base64
 from apscheduler.schedulers.background import BackgroundScheduler
 
 ser=serial.Serial("/dev/ttyACM0",9600)
@@ -27,7 +28,7 @@ camera.rotation = 180
 camera.resolution = (1280, 768)
 
 # To achieve AES 256, the key must have a length of 32 bits
-aes = AES.new("This needs to be a 32 bit key!!!", AES.MODE_CBC, "This is a 16 bit")
+#aes = AES.new("This needs to be a 32 bit key!!!", AES.MODE_CBC, "This is a 16 bit")
 
 def deleteVideos():
     print("Started deleting older videos")
@@ -39,7 +40,20 @@ def deleteVideos():
            
         indexVideoDeleted = indexVideo - 1
     print("Finished deleting older videos")
-        
+
+    
+def customEncryptData(strText):
+    print("Started encrypting data")
+    strResult = ""
+    
+    for i in range(0, len(strText)):
+        if(strText[i] == " ")
+            strResult += "n "
+        else:
+            strResult += str(ord(strText[i]) - 10) + " "
+            
+    return strResult
+
         
 scheduler = BackgroundScheduler()
 scheduler.start()
@@ -59,13 +73,16 @@ try:
             Input = ser.readline()
             time = datetime.datetime.now()
             time = time.strftime("%Y-%M-%dT%I%M%S")
-            if len(time) < 32:
-                time += "!" * (32 - len(time))
+            #if len(time) < 32:
+                #time += "!" * (32 - len(time))
             message = "Sensor triggered"
-            encryptedMessage = aes.encrypt(message)
-            encryptedTime = aes.encrypt(time)
+            #encryptedMessage = aes.encrypt(message)
+            #encryptedTime = aes.encrypt(time)
             
-            dataOut = {"message": str(encryptedMessage)[2:-1], "datetime": str(encryptedTime)[2:-1]}
+            encryptedMessage = customEncryptData(message)
+            encryptedTime = customEncryptTime(time)
+            
+            dataOut = {"message": encryptedMessage, "datetime": encryptedTime}
             firebase.post('/Door1/DT', dataOut)
 
             print("Sent message")
