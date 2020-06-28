@@ -72,7 +72,7 @@ try:
             print("Received message")
             Input = ser.readline()
             time = datetime.datetime.now()
-            time = time.strftime("%Y-%M-%dT%I%M%S")
+            time = time.strftime("%Y-%m-%d %H%M%S")
             #if len(time) < 32:
                 #time += "!" * (32 - len(time))
             message = "Sensor triggered"
